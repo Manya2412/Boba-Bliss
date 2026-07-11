@@ -1,0 +1,17 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "spring-boot.ls.problem.application-properties.unknown-property": "warning",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/target": true,
+        "**/.mvn": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/target": true,
+        "**/build": true
+    }
+}
