@@ -50,5 +50,5 @@ frontend/*.log
 
 *.env
 !.env.example
-application.properties
+backend/src/main/application.properties
 
