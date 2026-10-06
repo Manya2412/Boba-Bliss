@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Cart from './pages/Cart';
@@ -14,67 +13,67 @@ import OrderManagement from "./pages/admin/OrderManagement";
 function App() {
 
   const [
-showLoginModal,
-setShowLoginModal,
-] = useState(false);
+    showLoginModal,
+    setShowLoginModal,
+  ] = useState(false);
 
-const [
-showRegisterModal,
-setShowRegisterModal,
-] = useState(false);
+  const [
+    showRegisterModal,
+    setShowRegisterModal,
+  ] = useState(false);
 
   return (<>
     <Routes>
-<Route
-  path="/"
-  element={
-    <Home
-      openLogin={() =>
-        setShowLoginModal(true)
+      <Route
+        path="/"
+        element={
+          <Home
+            openLogin={() =>
+              setShowLoginModal(true)
+            }
+            openRegister={() =>
+              setShowRegisterModal(true)
+            }
+          />
+        }
+      />
+      <Route path="/menu" element={<Menu />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/orders" element={<Orders />} />
+      <Route
+        path="/admin/products"
+        element={<ProductManagement />}
+      />
+
+      <Route
+        path="/admin/orders"
+        element={<OrderManagement />}
+      />
+    </Routes>
+
+    <LoginModal
+      isOpen={showLoginModal}
+      onClose={() =>
+        setShowLoginModal(false)
       }
-      openRegister={() =>
-        setShowRegisterModal(true)
-      }
+      onOpenRegister={() => {
+        setShowLoginModal(false);
+        setShowRegisterModal(true);
+      }}
     />
-  }
-/>
-<Route path="/menu" element={<Menu />} />
-<Route path="/cart" element={<Cart />} />
-<Route path="/profile" element={<Profile />} />
-<Route path="/orders" element={<Orders />} />
-<Route
-  path="/admin/products"
-  element={<ProductManagement />}
-/>
 
-<Route
-  path="/admin/orders"
-  element={<OrderManagement />}
-/>
-</Routes>
-
-<LoginModal
-isOpen={showLoginModal}
-onClose={() =>
-setShowLoginModal(false)
-}
-onOpenRegister={() => {
-setShowLoginModal(false);
-setShowRegisterModal(true);
-}}
-/>
-
-<RegisterModal
-isOpen={showRegisterModal}
-onClose={() =>
-setShowRegisterModal(false)
-}
-onOpenLogin={() => {
-setShowRegisterModal(false);
-setShowLoginModal(true);
-}}
-/>
-</>
+    <RegisterModal
+      isOpen={showRegisterModal}
+      onClose={() =>
+        setShowRegisterModal(false)
+      }
+      onOpenLogin={() => {
+        setShowRegisterModal(false);
+        setShowLoginModal(true);
+      }}
+    />
+  </>
 
   );
 }

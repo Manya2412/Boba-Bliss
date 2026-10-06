@@ -10,26 +10,26 @@ import PopularDrinks from "../components/home/PopularDrinks";
 import Testimonials from "../components/home/Testimonials";
 
 function Home({
-openLogin,
-openRegister,
+    openLogin,
+    openRegister,
 }) {
- 
-  return (
-    <>
-      <Navbar
-  openLogin={openLogin}
-  openRegister={openRegister}
-/>
-      <HeroSection />
-      <FeaturesSection />
-      <PopularDrinks />
-      <HowItWorks />
-      <OfferBanner />
-      <Testimonials />
-      <ContactSection />
-      <Footer />
-    </>
-  );
+
+    return (
+        <>
+            <Navbar
+                openLogin={openLogin}
+                openRegister={openRegister}
+            />
+            <HeroSection />
+            <FeaturesSection />
+            <PopularDrinks />
+            <HowItWorks />
+            <OfferBanner />
+            <Testimonials />
+            <ContactSection />
+            <Footer />
+        </>
+    );
 }
 
 export default Home;

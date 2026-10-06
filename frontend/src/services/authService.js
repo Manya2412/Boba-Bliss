@@ -26,10 +26,6 @@ const authService = {
   },
 
   logout: async () => {
-    /*
-     * If the backend has a logout API, call it.
-     * JWT logout can also be handled by deleting the token locally.
-     */
     try {
       await api.post("*auth/logout");
     } finally {
