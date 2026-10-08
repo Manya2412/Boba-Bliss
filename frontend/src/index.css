@@ -1,19 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+@theme {
+    --color-boba-primary: #F76C6C;
+    --color-boba-dark: #E85A4F;
+    --color-boba-cream: #FFF3E9;
+    --color-boba-brown: #3E2723;
+    --color-boba-text: #1F1F1F;
+    --color-boba-gray: #666666;
+    --color-boba-border: #EDEDED;
 
-html{
-  scroll-behavior:smooth;
+    --font-heading: "Playfair Display", serif;
+    --font-body: "Poppins", sans-serif;
 }
 
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:#FFF3E9;
+html {
+    scroll-behavior: smooth;
 }
 
-.font-heading{
-  font-family:'Playfair Display', serif;
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #FFF3E9;
+}
+
+.font-heading {
+    font-family: "Playfair Display", serif;
 }

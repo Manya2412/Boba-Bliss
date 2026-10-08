@@ -12,7 +12,7 @@ import { useAuth } from "../../context/AuthContext";
 import { getApiError } from "../../utils/getApiError";
 
 function RegisterModal({
-    isopen,
+    isOpen,
     onClose,
     onOpenLogin,
     onRegisterSuccess,
