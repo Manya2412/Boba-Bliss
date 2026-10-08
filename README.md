@@ -23,7 +23,7 @@ cd backend
 Start the Spring Boot application:
 
 ```bash
-mvnw spring-boot:run
+.\mvnw.cmd spring-boot:run
 ```
 
 The backend will run on:
