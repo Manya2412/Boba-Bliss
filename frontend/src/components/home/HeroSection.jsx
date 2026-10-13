@@ -1,17 +1,22 @@
-import heroImage from "../../assets/images/hero-boba.png";
-import heroImageBanner from "../../assets/images/hero-banner.png";
+import heroBobaImage from "../../assets/images/heroBoba.png";
+import { useNavigate } from "react-router-dom";
 
 function HeroSection() {
+
+    const navigate = useNavigate();
+
     return (
         <section
-            className="min-h-[750px] bg-cover bg-center bg-no-repeat flex items-center"
+            className="w-full bg-cover bg-center bg-no-repeat flex items-center"
             style={{
-                backgroundImage: `url(${heroImageBanner})`,
+                backgroundImage: `url(${heroBobaImage})`,
             }}
         >
+
+
             <div className="max-w-7xl mx-auto px-6 w-full">
-                <div className="max-w-2xl">
-                    <p className="text-boba-primary uppercase tracking-[5px] font-semibold mb-4">
+                <div className="max-w-2xl py-8">
+                    <p className="text-boba-primary uppercase tracking-[5px] font-semibold mb-2">
                         Sip Happiness
                     </p >
 
@@ -19,7 +24,7 @@ function HeroSection() {
                         Delicious Boba.
                     </h1 >
 
-                    <h1 className="font-heading text-6xl lg:text-8xl font-bold leading-tight text-boba-text">
+                    <h1 className="font-heading text-6xl lg:text-7xl font-bold leading-tight text-boba-text">
                         Made for You.
                     </h1>
 
@@ -28,23 +33,29 @@ function HeroSection() {
                         of tea, milk and happiness in every cup.
                     </ p>
 
-                    <div className="flex flex-wrap gap-4 mt-8">
-                        <button className="px-8 py-4 rounded-xl bg-boba-primary text-white font-semibold shadow-lg hover:bg-boba-dark transition duration-300">
+                    <div className="flex flex-wrap gap-4 mt-12">
+                        <button
+                            onClick={() => navigate("/cart")}
+                            className="px-8 py-4 rounded-xl bg-boba-primary text-white font-semibold shadow-lg hover:bg-boba-dark transition duration-300 cursor-pointer"
+                        >
                             Explore Menu
                         </button>
 
-                        <button className="px-8 py-4 rounded-xl bg-white border border-gray-300 font-semibold hover:shadow-md transition duration-300">
+                        <button
+                            onClick={() => navigate("/cart")}
+                            className="px-8 py-4 rounded-xl bg-white border border-gray-300 font-semibold hover:shadow-md transition duration-300 cursor-pointer"
+                        >
                             Order Now
                         </button>
                     </div>
 
-                    <div className="flex flex-wrap gap-10 mt-14">
+                    <div className="flex flex-wrap gap-10 mt-12 ml-2">
                         <div>
                             <h3 className="text-3xl font-bold text-boba-text">
                                 4.9
                             </h3>
 
-                            <p className="text-gray-500">
+                            <p className="text-black-500 font-semibold">
                                 Rating
                             </p>
                         </div>
@@ -54,7 +65,7 @@ function HeroSection() {
                                 50+
                             </h3>
 
-                            <p className="text-gray-500">
+                            <p className="text-black-500 font-semibold">
                                 Flavors
                             </p>
                         </div>
@@ -64,7 +75,7 @@ function HeroSection() {
                                 10K+
                             </h3>
 
-                            <p className="text-gray-500">
+                            <p className="text-black-500 font-semibold">
                                 Happy Customers
                             </p>
                         </div>

@@ -4,8 +4,8 @@ import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import ProductCard from "../components/common/ProductCard";
 
-import classicMilkTea from "../assets/images/hero-boba.png";
-import brownSugar from "../assets/images/hero-boba.png";
+import classicMilkTea from "../assets/images/heroBoba.png";
+import menuBobaImage from "../assets/images/menuBoba.png"
 
 function Menu() {
     const [searchText, setSearchText] = useState("");
@@ -22,7 +22,7 @@ function Menu() {
         },
         {
             id: 2,
-            image: brownSugar,
+            image: classicMilkTea,
             name: "Brown Sugar Boba",
             category: "Milk Tea",
             price: 180,
@@ -38,7 +38,7 @@ function Menu() {
         },
         {
             id: 4,
-            image: brownSugar,
+            image: classicMilkTea,
             name: "Matcha Latte",
             category: "Matcha",
             price: 190,
@@ -54,7 +54,7 @@ function Menu() {
         },
         {
             id: 6,
-            image: brownSugar,
+            image: classicMilkTea,
             name: "Mango Green Tea",
             category: "Fruit Tea",
             price: 150,
@@ -70,7 +70,7 @@ function Menu() {
         },
         {
             id: 8,
-            image: brownSugar,
+            image: classicMilkTea,
             name: "Peach Oolong Tea",
             category: "Fruit Tea",
             price: 150,
@@ -129,7 +129,7 @@ function Menu() {
 
                         {/* Right side */}
                         <div className="hidden lg:flex justify-end">
-                            {brownSugar}
+                            {menuBobaImage}
                         </div>
 
                     </div>
@@ -149,8 +149,8 @@ function Menu() {
                                     key={category}
                                     onClick={() => setSelectedCategory(category)}
                                     className={`px-6 py-3 rounded-full border transition ${selectedCategory === category
-                                            ? "bg-boba-primary border-boba-primary text-white"
-                                            : "bg-white border-boba-primary text-boba-primary hover:bg-pink-50"
+                                        ? "bg-boba-primary border-boba-primary text-white"
+                                        : "bg-white border-boba-primary text-boba-primary hover:bg-pink-50"
                                         }`}
                                 >
                                     {category}

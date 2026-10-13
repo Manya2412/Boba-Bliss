@@ -18,7 +18,7 @@ function HowItWorks() {
     ];
 
     return (
-        <section className="bg-white py-20">
+        <section className="bg-white py-20" id="about">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <p className="text-boba-primary uppercase tracking-[4px] font-semibold">

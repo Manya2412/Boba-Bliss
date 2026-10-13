@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import Modal from "../common/Modal";
 import { useAuth } from "../../context/AuthContext";
 import { getApiError } from "../../utils/getApiError";
 
 function LoginModal({
-    isopen,
+    isOpen,
     onClose,
     onOpenRegister,
     onLoginSuccess,
 }) {
     const { login, isLoading } = useAuth();
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -32,13 +34,14 @@ function LoginModal({
         event.preventDefault();
         setErrorMessage("");
 
-        if (!formData.email.trim()) {
-            setErrorMessage("Email is required");
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(formData.email.trim())) {
+            setErrorMessage("Please enter a valid email address.");
             return;
         }
 
-        if (!formData.password) {
-            setErrorMessage("Password is required");
+        if (formData.password.length < 6) {
+            setErrorMessage("Password must be at least 6 characters long.");
             return;
         }
 
@@ -64,7 +67,7 @@ function LoginModal({
 
     return (
         <Modal
-            isOpen={isopen}
+            isOpen={isOpen}
             onClose={onClose}
             title="Welcome Back"
         >
@@ -101,9 +104,9 @@ function LoginModal({
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="you@example.com"
+                            placeholder="user@bobabliss.com"
                             autoComplete="email"
-                            className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl outline-none focus:border-boba-primary focus:ring-2 focus:ring-pink-100"
+                            className="w-full pl-11 pr-4 py-2 border border-gray-300 rounded-xl outline-none focus:border-boba-primary focus:ring-2 focus:ring-pink-100"
                         />
                     </div>
                 </div>
@@ -122,25 +125,44 @@ function LoginModal({
 
                         <input
                             id="login-password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Enter your password"
                             autoComplete="current-password"
-                            className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl outline-none focus:border-boba-primary focus:ring-2 focus:ring-pink-100"
-
+                            className="w-full pl-11 pr-12 py-2 border border-gray-300 rounded-xl outline-none focus:border-boba-primary focus:ring-2 focus:ring-pink-100"
                         />
+
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((current) => !current)}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-boba-primary cursor-pointer"
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
                     </div>
                 </div>
 
                 <button
                     type="submit"
-                    disabled={isLoading}
-                    className="w-full py-4 bg-boba-primary text-white rounded-xl font-semibold hover:bg-boba-dark transition dosabled:bg-gray-300 disabled:cursor-not-allowed"
+                    disabled={
+                        isLoading ||
+                        !formData.email.trim() ||
+                        !formData.password
+                    }
+
+                    className={`w-full py-3 text-white rounded-xl font-semibold transition ${isLoading ||
+                        !formData.email.trim() ||
+                        !formData.password
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-boba-primary hover:bg-boba-dark cursor-pointer"
+                        }`}
                 >
                     {isLoading ? "Logging in..." : "Login"}
                 </button>
+
             </form >
 
             <p className="mt-6 text-center text-gray-600">
@@ -149,7 +171,7 @@ function LoginModal({
                 <button
                     type="button"
                     onClick={openRegister}
-                    className="text-boba-primary font-semibold hover:underline"
+                    className="text-boba-primary font-semibold hover:underline cursor-pointer"
                 >
                     Register now
                 </button>

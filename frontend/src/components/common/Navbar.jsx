@@ -1,14 +1,48 @@
-import { Link } from "react-router-dom";
-import { FaSearch, FaShoppingCart } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
+import { useEffect, useRef } from "react";
 
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import UserDropdown from "../common/UserDropdown";
+import logo from "../../assets/images/logo.png";
 
 function Navbar({ openLogin, openRegister }) {
     const { cartCount } = useCart();
 
-    const { user, isAuthenticated, logout } = useAuth();
+    const { isAuthenticated } = useAuth();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const pendingSection = useRef(null);
+
+    useEffect(() => {
+        if (location.pathname === "/" && pendingSection.current) {
+            const sectionId = pendingSection.current;
+            pendingSection.current = null;
+
+            requestAnimationFrame(() => {
+                document.getElementById(sectionId)?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            });
+        }
+    }, [location.pathname]);
+
+    const scrollToSection = (sectionId) => {
+        if (location.pathname !== "/") {
+            pendingSection.current = sectionId;
+            navigate("/");
+            return;
+        }
+
+        document.getElementById(sectionId)?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    };
 
     return (
         <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
@@ -16,8 +50,8 @@ function Navbar({ openLogin, openRegister }) {
                 <div className="h-20 flex items-center justify-between">
 
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-3">
-                        <span className="text-3xl">logo</span>
+                    <Link to="/" className="flex items-center">
+                        <img src={logo} alt="Comapny logo" width={65} height={70} />
 
                         <h1 className="text-2xl lg:text-3xl font-heading font-bold text-boba-brown">
                             BOBA BLISS
@@ -25,7 +59,7 @@ function Navbar({ openLogin, openRegister }) {
                     </Link>
 
                     {/* Navigation */}
-                    <div className="hidden md:flex gap-10 font-medium text-gray-700">
+                    <div className="hidden md:flex gap-6 font-medium text-xl text-gray-700">
                         <Link to="/" className="hover:text-boba-primary transition">
                             Home
                         </Link>
@@ -34,28 +68,33 @@ function Navbar({ openLogin, openRegister }) {
                             Menu
                         </Link>
 
-                        <Link to="/#about" className="hover:text-boba-primary transition">
+                        <button
+                            type="button"
+                            onClick={() => scrollToSection("about")}
+                            className="hover:text-boba-primary transition cursor-pointer"
+                        >
                             About
-                        </Link>
+                        </button>
 
-                        <Link to="/#features" className="hover:text-boba-primary transition">
+                        <button
+                            type="button"
+                            onClick={() => scrollToSection("features")}
+                            className="hover:text-boba-primary transition cursor-pointer"
+                        >
                             Features
-                        </Link>
+                        </button>
 
-                        <Link to="/#contact" className="hover:text-boba-primary transition">
+                        <button
+                            type="button"
+                            onClick={() => scrollToSection("contact")}
+                            className="hover:text-boba-primary transition cursor-pointer"
+                        >
                             Contact
-                        </Link>
+                        </button>
                     </div>
 
                     {/* Actions */}
                     <div className="flex items-center gap-5">
-                        <button
-                            type="button"
-                            aria-label="Search"
-                            className="hover:text-boba-primary transition"
-                        >
-                            <FaSearch className="text-xl" />
-                        </button>
 
                         <Link
                             to="/cart"
@@ -75,14 +114,14 @@ function Navbar({ openLogin, openRegister }) {
                             <>
                                 <button
                                     onClick={openLogin}
-                                    className="hidden lg:block px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+                                    className="hidden lg:block px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-200 transition cursor-pointer"
                                 >
                                     Login
                                 </button>
 
                                 <button
                                     onClick={openRegister}
-                                    className="hidden lg:block px-5 py-2 rounded-lg bg-boba-primary text-white hover:bg-boba-dark transition"
+                                    className="hidden lg:block px-5 py-2 rounded-lg bg-boba-primary text-white hover:bg-boba-dark transition cursor-pointer"
                                 >
                                     Register
                                 </button>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
     FaEnvelope,
     FaHome,
@@ -39,32 +39,25 @@ function RegisterModal({
     };
 
     const validateForm = () => {
-        if (!formData.fullName.trim()) {
-            return "Full name is required";
-        }
-
-        if (!formData.email.trim()) {
-            return "Email is required";
-        }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            return "Enter a valid email address";
+            return "Enter a valid email address.";
         }
 
         if (!/^\d{10}$/.test(formData.phone)) {
-            return "Enter a valid 10-digit phone number";
+            return "Enter a valid 10-digit phone number.";
         }
 
         if (formData.password.length < 6) {
-            return "Password must contain at least 6 characters";
+            return "Password must contain at least 6 characters.";
         }
 
         if (formData.password !== formData.confirmPassword) {
-            return "Passwords do not match";
+            return "Passwords do not match.";
         }
 
         if (!formData.address.trim()) {
-            return "Delivery address is required";
+            return "Delivery address is required.";
         }
 
         return "";
@@ -129,15 +122,11 @@ function RegisterModal({
             isOpen={isOpen}
             onClose={onClose}
             title="Create an Account"
-            maxwidth="max-w-x1"
+            maxwidth="max-w-xl"
         >
 
-            <p className="text-gray-600 mb-6">
-                Register once and order your favorite boba drinks anytime.
-            </p>
-
             {errorMessage && (
-                <div className="mb-5 rounded-x1 bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+                <div className="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
                     {errorMessage}
                 </div>
             )}
@@ -147,28 +136,50 @@ function RegisterModal({
                 className="space-y-5"
             >
 
-                {/* Full name */}
-                <FormField
-                    id="register-name"
-                    label="Full name"
-                    icon={<FaUser />}
-                >
-                    <input
+                < div className="grid sm:grid-cols-2 gap-4">
+                    {/* Full name */}
+                    <FormField
                         id="register-name"
-                        type="text"
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleChange}
-                        placeholder="Enter your full name"
-                        autoComplete="name"
-                        className="form-input"
-                    />
-                </FormField >
+                        label="Full Name"
+                        icon={<FaUser />}
+                    >
+                        <input
+                            id="register-name"
+                            type="text"
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleChange}
+                            placeholder="Enter your name"
+                            autoComplete="name"
+                            className="form-input"
+                        />
+                    </FormField >
+
+                    {/* Phone */}
+                    < FormField
+                        id="register-phone"
+                        label="Phone Number"
+                        icon={< FaPhone />}
+                    >
+                        <input
+                            id="register-phone"
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder="10-digit number"
+                            autoComplete="tel"
+                            maxLength="10"
+                            className="form-input"
+                        />
+                    </FormField >
+                </div>
+
 
                 {/* Email */}
                 < FormField
                     id="register-email"
-                    label="Email address"
+                    label="Email Address"
                     icon={< FaEnvelope />}
                 >
                     <input
@@ -177,33 +188,14 @@ function RegisterModal({
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="you@example.com"
+                        placeholder="user@bobabliss.com"
                         autoComplete="email"
                         className="form-input"
                     />
                 </FormField >
 
-                {/* Phone */}
-                < FormField
-                    id="register-phone"
-                    label="Phone number"
-                    icon={< FaPhone />}
-                >
-                    <input
-                        id="register-phone"
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="10-digit phone number"
-                        autoComplete="tel"
-                        maxLength="10"
-                        className="form-input"
-                    />
-                </FormField >
-
                 {/* Password */}
-                < div className="grid sm-grid-cols-2 gap-4">
+                < div className="grid sm:grid-cols-2 gap-4">
                     <FormField
                         id="register-password"
                         label="Password"
@@ -215,7 +207,7 @@ function RegisterModal({
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="Minimum 6 characters"
+                            placeholder="Min 6 characters"
                             autoComplete="new-password"
                             className="form-input"
                         />
@@ -223,7 +215,7 @@ function RegisterModal({
 
                     <FormField
                         id="register-confirm-password"
-                        label="Confirm password"
+                        label="Confirm Password"
                         icon={< FaLock />}
                     >
                         <input
@@ -241,17 +233,17 @@ function RegisterModal({
                 {/* Address */}
                 <FormField
                     id="register-address"
-                    label="Delivery address"
+                    label="Delivery Address"
                     icon={<FaHome />}
-                    alienTop
+                    alignTop
                 >
                     <textarea
                         id="register-address"
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
-                        placeholder="Enter your complete delivery address"
-                        rows="3"
+                        placeholder="Enter your delivery address"
+                        rows="2"
                         autoComplete="street-address"
                         className="form-input resize-none"
                     />
@@ -259,8 +251,22 @@ function RegisterModal({
 
                 <button
                     type="submit"
-                    disabled={isLoading}
-                    className="w-full py-4 bg-boba-primary text-white rounded-xl font-semibold hover:bg-boba-dark transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    disabled={
+                        isLoading ||
+                        !formData.fullName.trim() ||
+                        !formData.email.trim() ||
+                        !formData.phone ||
+                        !formData.password ||
+                        !formData.confirmPassword ||
+                        !formData.address.trim()
+                    }
+
+                    className={`w-full py-3 text-white rounded-xl font-semibold transition ${isLoading ||
+                        !formData.email.trim() ||
+                        !formData.password
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-boba-primary hover:bg-boba-dark cursor-pointer"
+                        }`}
                 >
                     {isLoading
                         ? "Creating account..."
@@ -273,7 +279,7 @@ function RegisterModal({
                 <button
                     type="button"
                     onClick={openLogin}
-                    className="text-boba-primary font-semibold hover:underline"
+                    className="text-boba-primary font-semibold hover:underline cursor-pointer"
                 >
                     Login
                 </button>
@@ -300,16 +306,23 @@ function FormField({
 
             <div className="relative">
                 <span
-                    className={`absolute left-4 text-gray-400 ${alignTop ? "top-4" : "top-1/2 -translate-y-1/2"
+                    className={`absolute left-4 text-gray-400 ${alignTop
+                        ? "top-4"
+                        : "top-1/2 -translate-y-1/2"
                         }`}
                 >
                     {icon}
                 </span>
 
-                {children}
+                {React.cloneElement(children, {
+                    className: `w-full pl-11 pr-4 py-2 border border-gray-300 rounded-xl outline-none focus:border-boba-primary focus:ring-2 focus:ring-pink-100 ${children.props.className || ""
+                        }`,
+                })}
             </div>
         </div>
     );
 }
+
+
 
 export default RegisterModal;

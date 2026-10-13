@@ -25,7 +25,7 @@ function PopularDrinks() {
     ];
 
     return (
-        <section className="bg-boba-cream py-20">
+        <section className="bg-boba-cream py-15">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <p className="text-boba-primary font-semibold uppercase tracking-[4px]">

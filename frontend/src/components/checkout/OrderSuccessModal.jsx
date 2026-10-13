@@ -7,7 +7,7 @@ import {
 import Modal from "../common/Modal";
 
 function OrderSuccessModal({
-    isopen,
+    isOpen,
     onClose,
     order,
 }) {
