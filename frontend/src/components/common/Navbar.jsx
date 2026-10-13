@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import UserDropdown from "../common/UserDropdown";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/icons/logo.png";
 
 function Navbar({ openLogin, openRegister }) {
     const { cartCount } = useCart();
