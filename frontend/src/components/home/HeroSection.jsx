@@ -13,7 +13,6 @@ function HeroSection() {
             }}
         >
 
-
             <div className="max-w-7xl mx-auto px-6 w-full">
                 <div className="max-w-2xl py-8">
                     <p className="text-boba-primary uppercase tracking-[5px] font-semibold mb-2">

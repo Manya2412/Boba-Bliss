@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderService {
 
-      private static final double DELIVERY_FEE = 40.0;
+      private static final double DELIVERY_FEE = 20.0;
       private static final String DISCOUNT_CODE = "BOBA20";
 
       private final OrderRepository orderRepository;

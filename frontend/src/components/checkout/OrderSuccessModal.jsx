@@ -26,14 +26,13 @@ function OrderSuccessModal({
         >
             <div className="text-center">
 
-                {/* Success icon */}
                 <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-3xl text-white">
                         <FaCheck />
                     </div>
                 </div>
 
-                <h2 className="mt-7 font-heading text-4x1 text-boba-text">
+                <h2 className="mt-7 font-heading text-4xl text-boba-text">
                     Order Placed Successfully!
                 </h2>
 
@@ -42,7 +41,6 @@ function OrderSuccessModal({
                     Your delicious drinks are being prepared.
                 </p>
 
-                {/* Order information */}
                 <div className="mt-7 rounded-2x1 bg-boba-cream p-5">
                     <p className="text-sm uppercase tracking-[2px] text-gray-500">
                         Order number

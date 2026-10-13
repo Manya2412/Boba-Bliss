@@ -1,4 +1,3 @@
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from "react-icons/fa"
 import ContactImage from "../../assets/images/contact.png";
 
 function ContactSection() {
@@ -17,7 +16,6 @@ function ContactSection() {
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-14 max-w-5xl mx-auto">
 
-                    {/* Contact Image */}
                     <div className="flex-1 flex justify-center">
                         <img
                             src={ContactImage}
@@ -26,7 +24,6 @@ function ContactSection() {
                         />
                     </div>
 
-                    {/* Newsletter */}
                     <div className="flex-1 w-full max-w-[600px] bg-boba-cream rounded-3xl p-10">
                         <h3 className="font-heading text-3xl mb-4">
                             Subscribe for Updates

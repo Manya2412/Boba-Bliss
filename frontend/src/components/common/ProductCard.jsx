@@ -11,10 +11,14 @@ function ProductCard({ product }) {
     const quantity = getProductQuantity(product.id);
 
     return (
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+        <div className="product-card bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
 
-            <div className="h-56 bg-[#FAF4EE] overflow-hiddem">
-                {product.image}
+            <div className="h-56 bg-[#FAF4EE] overflow-hidden flex items-center justify-center">
+                <img
+                    src={product.image}
+                    alt={product.name}
+                    className="product-card-image w-full h-full object-contain p-1 transition-transform duration-300"
+                />
             </div>
 
             <div className="p-4">
@@ -32,7 +36,7 @@ function ProductCard({ product }) {
                     <button
                         type="button"
                         onClick={() => addToCart(product)}
-                        className="w-full mt-4 border border-boba-primary text-boba-primary py-3 rounded-xl font-medium hover:bg-boba-primary hover:text-white transition"
+                        className="w-full mt-4 border border-boba-primary text-boba-primary py-3 rounded-xl font-medium hover:bg-boba-primary hover:text-white transition cursor-pointer"
                     >
                         Add To Cart
                     </button>
@@ -41,7 +45,7 @@ function ProductCard({ product }) {
                         <button
                             type="button"
                             onClick={() => decreaseQuantity(product.id)}
-                            className="w-14 py-3 text-xl font-bold text-boba-primary hover:bg-pink-50 transition"
+                            className="w-14 py-3 text-xl font-bold text-boba-primary hover:bg-pink-50 transition cursor-pointer"
                             aria-label={`Decrease ${product.name} quantity`}
                         >
                             -
@@ -54,7 +58,7 @@ function ProductCard({ product }) {
                         <button
                             type="button"
                             onClick={() => increaseQuantity(product.id)}
-                            className="w-14 py-3 text-xl font-bold text-boba-primary hover:bg-pink-50 transition"
+                            className="w-14 py-3 text-xl font-bold text-boba-primary hover:bg-pink-50 transition cursor-pointer"
                             aria-label={`Increase ${product.name} quantity`}
                         >
                             +

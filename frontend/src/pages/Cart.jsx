@@ -30,43 +30,32 @@ function Cart() {
         decreaseQuantity,
         removeFromCart,
         applyCoupon,
+        cartError,
     } = useCart();
 
     const { isAuthenticated } = useAuth();
-
-    const [couponCode, setCouponCode] =
-        useState("");
-
-    const [couponMessage, setCouponMessage] =
-        useState("");
-
-    const [couponSuccess, setCouponSuccess] =
-        useState(false);
-
+    const [couponCode, setCouponCode] = useState("");
+    const [couponMessage, setCouponMessage] = useState("");
+    const [couponSuccess, setCouponSuccess] = useState(false);
     const [copied, setCopied] = useState(false);
-
-    const [showLoginModal, setShowLoginModal] =
-        useState(false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     const [
         showRegisterModal,
         setShowRegisterModal,
     ] = useState(false);
 
+
     const copyCoupon = async () => {
         try {
-            await navigator.clipboard.writeText(
-                "BOBA20"
-            );
-
-            setCouponCode("BOBA20");
+            await navigator.clipboard.writeText("BOBA20");
             setCopied(true);
 
             window.setTimeout(() => {
                 setCopied(false);
             }, 2000);
         } catch {
-            setCouponCode("BOBA20");
+            console.log("Code copied")
         }
     };
 
@@ -119,9 +108,7 @@ function Cart() {
         setShowOrderSuccessModal,
     ] = useState(false);
 
-    const [placedOrder, setPlacedOrder] =
-        useState(null);
-
+    const [placedOrder, setPlacedOrder] = useState(null);
 
     return (
         <>
@@ -146,11 +133,11 @@ function Cart() {
                                     </p>
 
                                     <h2 className="font-heading text-3xl md:text-4xl mt-1">
-                                        Get 20% off your order
+                                        Get 20% off on your order
                                     </h2>
 
                                     <p className="mt-2 text-white/85">
-                                        Copy the coupon and apply it below.
+                                        Copy the coupon code and apply it below.
                                     </p>
                                 </div>
                             </div>
@@ -163,7 +150,7 @@ function Cart() {
                                 <button
                                     type="button"
                                     onClick={copyCoupon}
-                                    className="flex items-center gap-2 px-5 py-3 bg-boba-primary text-white rounded-lg hover:bg-boba-dark"
+                                    className="flex items-center gap-2 px-5 py-3 bg-boba-primary text-white rounded-lg hover:bg-boba-dark cursor-pointer"
                                 >
                                     {copied ? <FaCheck /> : <FaCopy />}
                                     {copied ? "Copied" : "Copy"}
@@ -172,7 +159,6 @@ function Cart() {
                         </div>
                     </div>
 
-                    {/* Heading */}
                     <div className="mt-12">
                         <p className="text-boba-primary uppercase tracking-[3px] font-semibold">
                             Your order
@@ -181,6 +167,12 @@ function Cart() {
                         <h1 className="font-heading text-5xl mt-2">
                             Shopping Cart
                         </h1>
+
+                        {cartError && (
+                            <p className="mt-4 text-red-600" role="alert">
+                                {cartError}
+                            </p>
+                        )}
                     </div>
 
                     {cartItems.length === 0 ? (
@@ -188,7 +180,6 @@ function Cart() {
                     ) : (
                         <div className="grid lg:grid-cols-[1fr_390px] gap-10 mt-10">
 
-                            {/* Cart products */}
                             <div className="border border-gray-200 rounded-3xl px-6 lg:px-8">
                                 {cartItems.map((item) => (
                                     <div
@@ -213,7 +204,7 @@ function Cart() {
                                                 onClick={() =>
                                                     removeFromCart(item.id)
                                                 }
-                                                className="mt-3 flex items-center gap-2 text-sm text-red-500"
+                                                className="mt-3 flex items-center gap-2 text-sm text-red-500 cursor-pointer"
                                             >
                                                 <FaTrash />
                                                 Remove
@@ -227,7 +218,7 @@ function Cart() {
                                                     onClick={() =>
                                                         decreaseQuantity(item.id)
                                                     }
-                                                    className="w-11 h-11 text-xl text-boba-primary hover:bg-pink-50"
+                                                    className="w-11 h-11 text-xl text-boba-primary hover:bg-pink-50 cursor-pointer"
                                                 >
                                                     −
                                                 </button>
@@ -241,7 +232,7 @@ function Cart() {
                                                     onClick={() =>
                                                         increaseQuantity(item.id)
                                                     }
-                                                    className="w-11 h-11 text-xl text-boba-primary hover:bg-pink-50"
+                                                    className="w-11 h-11 text-xl text-boba-primary hover:bg-pink-50 cursor-pointer"
                                                 >
                                                     +
                                                 </button>
@@ -277,7 +268,7 @@ function Cart() {
                                     <button
                                         type="button"
                                         onClick={handleApplyCoupon}
-                                        className="px-5 py-3 bg-white border border-boba-primary text-boba-primary rounded-xl font-semibold hover:bg-boba-primary hover:text-white"
+                                        className="px-5 py-3 bg-white border border-boba-primary text-boba-primary rounded-xl font-semibold hover:bg-boba-primary hover:text-white cursor-pointer"
                                     >
                                         Apply
                                     </button>
@@ -286,8 +277,8 @@ function Cart() {
                                 {couponMessage && (
                                     <p
                                         className={`mt-2 text-sm ${couponSuccess
-                                                ? "text-green-600"
-                                                : "text-red-500"
+                                            ? "text-green-600"
+                                            : "text-red-500"
                                             }`}
                                     >
                                         {couponMessage}
@@ -297,7 +288,7 @@ function Cart() {
                                 <div className="mt-7 space-y-4">
                                     <SummaryRow
                                         label="Subtotal"
-                                        value={`₹${subtotal}`}
+                                        value={`₹${(subtotal ?? 0).toFixed(2)}`}
                                     />
 
                                     <SummaryRow
@@ -306,13 +297,13 @@ function Cart() {
                                                 ? `Discount (${discountPercentage}%)`
                                                 : "Discount"
                                         }
-                                        value={`− ₹${discountAmount}`}
+                                        value={`− ₹${(discountAmount ?? 0).toFixed(2)}`}
                                         valueClass="text-green-600"
                                     />
 
                                     <SummaryRow
                                         label="Delivery fee"
-                                        value={`₹${deliveryFee}`}
+                                        value={`₹${(deliveryFee ?? 0).toFixed(2)}`}
                                     />
                                 </div>
 
@@ -321,15 +312,15 @@ function Cart() {
                                         Total
                                     </span>
 
-                                    <span className="text-3xl font-bold text-boba-primary">
-                                        ₹{totalAmount}
+                                    <span className="text-2xl font-bold text-boba-primary">
+                                        ₹{Number(totalAmount ?? 0).toFixed(2)}
                                     </span>
                                 </div>
 
                                 <button
                                     type="button"
                                     onClick={beginCheckout}
-                                    className="w-full mt-7 py-4 bg-boba-primary text-white rounded-xl font-semibold hover:bg-boba-dark transition"
+                                    className="w-full mt-7 py-4 bg-boba-primary text-white rounded-xl font-semibold hover:bg-boba-dark transition cursor-pointer"
                                 >
                                     Place Order
                                 </button>

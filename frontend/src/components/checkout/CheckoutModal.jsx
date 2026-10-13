@@ -12,7 +12,7 @@ import { useCart } from "../../context/CartContext";
 import { getApiError } from "../../utils/getApiError";
 
 function CheckoutModal({
-    isopen,
+    isOpen,
     onClose,
     onOrderSuccess,
 }) {
@@ -20,11 +20,7 @@ function CheckoutModal({
 
     const {
         cartItems,
-        subtotal,
         discountPercentage,
-        discountAmount,
-        deliveryFee,
-        totalAmount,
         clearCart,
     } = useCart();
 
@@ -39,7 +35,7 @@ function CheckoutModal({
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        if (isopen && user) {
+        if (isOpen && user) {
             setFormData({
                 phone: user.phone || "",
                 deliveryAddress: user.address || "",
@@ -48,7 +44,7 @@ function CheckoutModal({
 
             setErrorMessage("");
         }
-    }, [isopen, user]);
+    }, [isOpen, user]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -123,7 +119,7 @@ function CheckoutModal({
 
     return (
         <Modal
-            isOpen={isopen}
+            isOpen={isOpen}
             onClose={onClose}
             title="Complete Checkout"
             maxwidth="max-w-2x1"
@@ -139,13 +135,12 @@ function CheckoutModal({
                     </div>
                 )}
 
-                {/* Phone number */}
                 <div>
                     <label
                         htmlFor="checkout-phone"
                         className="block mb-2 text-sm font-semibold text-gray-700"
                     >
-                        Phone number
+                        Phone Number
                     </label>
 
                     <div className="relative">
@@ -165,13 +160,12 @@ function CheckoutModal({
                     </div>
                 </div>
 
-                {/* Delivery address */}
                 <div>
                     <label
                         htmlFor="checkout-address"
                         className="block mb-2 text-sm font-semibold text-gray-700"
                     >
-                        Delivery address
+                        Delivery Address
                     </label>
 
                     <div className="relative">
@@ -183,14 +177,13 @@ function CheckoutModal({
                             value={formData.deliveryAddress}
                             onChange={handleChange}
                             placeholder="Enter complete delivery address"
-                            rows={4}
+                            rows={2}
                             autoComplete="street-address"
                             className="w-full resize-none rounded-x1 border border-gray-300 py-3 pl-11 pr-4 outline-none focus:border-boba-primary focus:ring-2 focus-ring-pink-100"
                         />
                     </div>
                 </div>
 
-                {/* Payment method */}
                 <div>
                     <p className="mb-3 text-sm font-semibold text-gray-700">
                         Payment method
@@ -222,58 +215,12 @@ function CheckoutModal({
                     </label>
                 </div>
 
-                {/* Order summary */}
-                <div className="rounded-2x1 bg-boba-cream p-5">
-                    <h3 className="font-heading text-2x1">
-                        Final Summary
-                    </h3>
-
-                    <div className="mt-4 space-y-3">
-                        <CheckoutSummaryRow
-                            label="Items"
-                            value={`${cartItems.reduce(
-                                (total, item) => total + item.quantity, 0
-                            )}`}
-                        />
-
-                        <CheckoutSummaryRow
-                            label="Subtotal"
-                            value={`${subtotal}`}
-                        />
-
-                        <CheckoutSummaryRow
-                            label={
-                                discountPercentage > 0
-                                    ? `Discount (${discountPercentage}%)`
-                                    : "Discount"
-                            }
-                            value={`${discountAmount}`}
-                            valueClass="text-green-600"
-                        />
-
-                        <CheckoutSummaryRow
-                            label="Delivery fee"
-                            value={`₹${deliveryFee}`}
-                        />
-                    </div>
-
-                    <div className="mt-5 flex items-center justify-between border-t border-gray-300 pt-5">
-                        <span className="text-lg font-semibold">
-                            Amount payable
-                        </span>
-
-                        <span className="text-3x1 font-bold text-boba-primary">
-                            ₹{totalAmount}
-                        </span>
-                    </div>
-                </div>
-
                 <div className="flex flex-col-reverse gap-3 sm:flex-row">
                     <button
                         type="button"
                         onClick={onClose}
                         disabled={isSubmitting}
-                        className="flex-1 rounded-x1 border border-gray-300 py-4 font-semibold hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="flex-1 rounded-x1 border border-gray-300 py-4 font-semibold hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
                     >
                         Back to Cart
                     </button>
@@ -281,7 +228,7 @@ function CheckoutModal({
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 rounded-x1 bg-boba-primary py-4 font-semibold text-white transition hover:bg-boba-dark disabled:cursor-not-allowed disabled:bg-gray-300"
+                        className="flex-1 rounded-x1 bg-boba-primary py-4 font-semibold text-white transition hover:bg-boba-dark disabled:cursor-not-allowed disabled:bg-gray-300 cursor-pointer"
                     >
                         {isSubmitting
                             ? "Placing Order..."
@@ -290,24 +237,6 @@ function CheckoutModal({
                 </div>
             </form>
         </Modal>
-    );
-}
-
-function CheckoutSummaryRow({
-    label,
-    value,
-    valueClass = "",
-}) {
-    return (
-        <div className="flex justify-between">
-            <span className="text-gray-600">
-                {label}
-            </span>
-
-            <span className={`font-semibold ${valueClass}`}>
-                {value}
-            </span>
-        </div>
     );
 }
 

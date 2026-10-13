@@ -49,7 +49,6 @@ function Navbar({ openLogin, openRegister }) {
             <div className="max-w-7xl mx-auto px-6 lg:px-14">
                 <div className="h-20 flex items-center justify-between">
 
-                    {/* Logo */}
                     <Link to="/" className="flex items-center">
                         <img src={logo} alt="Comapny logo" width={65} height={70} />
 
@@ -58,7 +57,6 @@ function Navbar({ openLogin, openRegister }) {
                         </h1>
                     </Link>
 
-                    {/* Navigation */}
                     <div className="hidden md:flex gap-6 font-medium text-xl text-gray-700">
                         <Link to="/" className="hover:text-boba-primary transition">
                             Home
@@ -93,7 +91,6 @@ function Navbar({ openLogin, openRegister }) {
                         </button>
                     </div>
 
-                    {/* Actions */}
                     <div className="flex items-center gap-5">
 
                         <Link

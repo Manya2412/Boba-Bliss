@@ -137,7 +137,6 @@ function RegisterModal({
             >
 
                 < div className="grid sm:grid-cols-2 gap-4">
-                    {/* Full name */}
                     <FormField
                         id="register-name"
                         label="Full Name"
@@ -155,7 +154,6 @@ function RegisterModal({
                         />
                     </FormField >
 
-                    {/* Phone */}
                     < FormField
                         id="register-phone"
                         label="Phone Number"
@@ -175,8 +173,6 @@ function RegisterModal({
                     </FormField >
                 </div>
 
-
-                {/* Email */}
                 < FormField
                     id="register-email"
                     label="Email Address"
@@ -194,7 +190,6 @@ function RegisterModal({
                     />
                 </FormField >
 
-                {/* Password */}
                 < div className="grid sm:grid-cols-2 gap-4">
                     <FormField
                         id="register-password"
@@ -230,7 +225,6 @@ function RegisterModal({
                     </FormField>
                 </div>
 
-                {/* Address */}
                 <FormField
                     id="register-address"
                     label="Delivery Address"

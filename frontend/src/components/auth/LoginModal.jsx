@@ -11,7 +11,6 @@ function LoginModal({
     onLoginSuccess,
 }) {
     const { login, isLoading } = useAuth();
-
     const [showPassword, setShowPassword] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -86,7 +85,6 @@ function LoginModal({
                 className="space-y-5"
             >
 
-                {/* Email */}
                 <div>
                     <label
                         htmlFor="login-email"
@@ -111,7 +109,6 @@ function LoginModal({
                     </div>
                 </div>
 
-                {/* Password */}
                 <div>
                     <label
                         htmlFor="login-password"

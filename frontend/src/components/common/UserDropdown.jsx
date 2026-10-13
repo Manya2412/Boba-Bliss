@@ -14,9 +14,9 @@ function UserDropdown() {
         <div className="relative">
             <button
                 onClick={() => setOpen(!open)}
-                className="font-semibold text-boba-primary"
+                className="font-semibold text-boba-primary cursor-pointer"
             >
-                Hi, {user?.fullName?.split(" ")[0]} ▼
+                Hi! {user?.fullName?.split(" ")[0]} ▼
             </button>
 
             {open && (
@@ -78,7 +78,7 @@ function UserDropdown() {
                             logout();
                             setOpen(false);
                         }}
-                        className="w-full text-left px-4 py-3 text-red-500 hover:bg-gray-50"
+                        className="w-full text-left px-4 py-3 text-red-500 hover:rounded-lg hover:bg-gray-50 cursor-pointer"
                     >
                         Logout
                     </button>

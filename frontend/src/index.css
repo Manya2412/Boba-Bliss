@@ -26,3 +26,29 @@ body {
 .font-heading {
     font-family: "Playfair Display", serif;
 }
+
+.popular-drinks-swiper .swiper-slide {
+    height: auto;
+    opacity: 0.7;
+    transform: scale(0.92);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.popular-drinks-swiper .swiper-slide-active {
+    opacity: 1;
+}
+
+.popular-drinks-swiper .swiper-slide-active .product-card {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+.popular-drinks-swiper .swiper-pagination-bullet {
+    background: #F76C6C;
+    opacity: 0.5;
+}
+
+.popular-drinks-swiper .swiper-pagination-bullet-active {
+    opacity: 1;
+    border-radius: 8px;
+}

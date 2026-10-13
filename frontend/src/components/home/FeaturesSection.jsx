@@ -63,7 +63,7 @@ function FeaturesSection() {
                             <p className="mt-3 text-gray-600 leading-7">
                                 {feature.description}
                             </p>
-                        </div >
+                        </div>
                     ))}
                 </div >
             </div >

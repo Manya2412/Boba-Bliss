@@ -59,7 +59,7 @@ function Testimonials() {
                             </div>
 
                             <p className="mt-6 text-gray-600 leading-7">
-                                "{review.review}"
+                                {review.review}
                             </p>
                         </div>
                     ))}
