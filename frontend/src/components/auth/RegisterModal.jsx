@@ -122,7 +122,7 @@ function RegisterModal({
             isOpen={isOpen}
             onClose={onClose}
             title="Create an Account"
-            maxwidth="max-w-xl"
+            maxWidth="max-w-xl"
         >
 
             {errorMessage && (
