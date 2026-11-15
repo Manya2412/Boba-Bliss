@@ -13,11 +13,11 @@ function ProductCard({ product }) {
     return (
         <div className="product-card bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
 
-            <div className="h-56 bg-[#FAF4EE] overflow-hidden flex items-center justify-center">
+            <div className="aspect-[4/3] bg-[#FAF4EE] overflow-hidden flex items-center justify-center">
                 <img
                     src={product.image}
                     alt={product.name}
-                    className="product-card-image w-full h-full object-contain p-1 transition-transform duration-300"
+                    className="product-card-image w-full h-full object-cover transition-transform duration-300"
                 />
             </div>
 

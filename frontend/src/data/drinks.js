@@ -1,10 +1,11 @@
 
 import MatchaLatte from "../assets/drinks/matchaLatte.png";
+import ChocolateBoba from "../assets/drinks/chocolateBoba.png";
 
 const drinks = [
     {
         id: 1,
-        image: MatchaLatte,
+        image: ChocolateBoba,
         name: "Classic Milk Tea",
         category: "Milk Tea",
         price: 160,
