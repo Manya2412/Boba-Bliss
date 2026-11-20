@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 
 function UserDropdown() {
     const [open, setOpen] = useState(false);
     const { user, logout } = useAuth();
+    const { clearCart } = useCart();
     const isAdmin = user?.role === "ROLE_ADMIN";
 
     return (
@@ -72,6 +74,7 @@ function UserDropdown() {
                         <button
                             onClick={() => {
                                 logout();
+                                clearCart();
                                 setOpen(false);
                             }}
                             className="w-full text-left px-4 py-3 text-red-500 hover:rounded-lg hover:bg-gray-50 cursor-pointer"

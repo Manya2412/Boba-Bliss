@@ -23,16 +23,7 @@ const authService = {
     const response = await api.get("/auth/me");
 
     return response.data;
-  },
-
-  logout: async () => {
-    try {
-      await api.post("*auth/logout");
-    } finally {
-      localStorage.removeItem("token")
-      localStorage.removeItem("user");
-    }
-  },
+  }
 };
 
 export default authService;

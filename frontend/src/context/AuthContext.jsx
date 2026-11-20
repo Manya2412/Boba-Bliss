@@ -63,17 +63,11 @@ export function AuthProvider({ children }) {
         }
     };
 
-    const logout = async () => {
-        try {
-            await authService.logout();
-        } catch (error) {
-            console.error("Logout API failed", error);
-        } finally {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            setUser(null);
-        }
-    };
+    const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+};
 
     const updateUser = (updatedUser) => {
         localStorage.setItem(
