@@ -4,6 +4,7 @@ import Modal from "../common/Modal";
 import { useAuth } from "../../context/AuthContext";
 import { getApiError } from "../../utils/getApiError";
 
+const EMPTY_FORM = { email: "", password: "" };
 function LoginModal({
     isOpen,
     onClose,
@@ -12,14 +13,14 @@ function LoginModal({
 }) {
     const { login, isLoading } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
-
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-
-    });
-
+    const [formData, setFormData] = useState(EMPTY_FORM);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const resetForm = () => {
+        setFormData(EMPTY_FORM);
+        setErrorMessage("");
+        setShowPassword(false);
+    };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -27,6 +28,11 @@ function LoginModal({
         setFormData((currentData) => ({ ...currentData, [name]: value, }));
 
         setErrorMessage("");
+    };
+
+    const handleClose = () => {
+        resetForm();
+        onClose();
     };
 
     const handleSubmit = async (event) => {
@@ -46,10 +52,7 @@ function LoginModal({
 
         try {
             await login(formData);
-
-            setFormData({ email: "", password: "", });
-            onClose();
-
+            handleClose();
             if (onLoginSuccess) {
                 onLoginSuccess();
             }
@@ -60,14 +63,14 @@ function LoginModal({
 
     const openRegister = () => {
         setErrorMessage("");
-        onClose();
+        handleClose();
         onOpenRegister();
     };
 
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={handleClose}
             title="Welcome Back"
         >
             <p className="text-gray-600 mb-6">
@@ -90,7 +93,7 @@ function LoginModal({
                         htmlFor="login-email"
                         className="block text-sm font-semibold text-gray-700 mb-2"
                     >
-                        Email address
+                        Email Address <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
 
                     <div className="relative">
@@ -114,7 +117,7 @@ function LoginModal({
                         htmlFor="login-password"
                         className="block text-sm font-semibold text-gray-700 mb-2"
                     >
-                        Password
+                        Password <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
 
                     <div className="relative">
