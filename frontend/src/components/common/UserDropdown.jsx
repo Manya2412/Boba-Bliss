@@ -11,7 +11,7 @@ function UserDropdown() {
         <div className="relative">
             <button
                 onClick={() => setOpen(!open)}
-                className="font-semibold text-boba-primary cursor-pointer">
+                className="font-semibold text-boba-primary cursor-pointer text-xl">
                 Hi! {user?.fullName?.split(" ")[0]} ▼
             </button>
 

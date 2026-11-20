@@ -1,9 +1,11 @@
 package com.bobabliss.service;
 
+import java.io.IOException;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-import com.bobabliss.dto.product.ProductRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.bobabliss.entity.Product;
 import com.bobabliss.exception.ResourceNotFoundException;
 import com.bobabliss.repository.ProductRepository;
@@ -26,30 +28,32 @@ public class ProductService {
                         .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
       }
 
-      public Product addProduct(ProductRequest request) {
+      public Product addProduct(String name, String category, Double price, MultipartFile image)
+                  throws IOException {
 
             Product product = Product.builder()
-                        .name(request.getName())
-                        .description(request.getDescription())
-                        .category(request.getCategory())
-                        .price(request.getPrice())
-                        .imageUrl(request.getImageUrl())
-                        .available(request.getAvailable())
+                        .name(name)
+                        .category(category)
+                        .price(price)
+                        .image(image.getBytes())
                         .build();
 
             return productRepository.save(product);
       }
 
-      public Product updateProduct(Long id, ProductRequest request) {
+      public Product updateProduct(Long id, String name, String category, Double price, MultipartFile image)
+                  throws IOException {
 
             Product product = getProductById(id);
 
-            product.setName(request.getName());
-            product.setDescription(request.getDescription());
-            product.setCategory(request.getCategory());
-            product.setPrice(request.getPrice());
-            product.setImageUrl(request.getImageUrl());
-            product.setAvailable(request.getAvailable());
+            product.setName(name);
+            product.setCategory(category);
+            product.setPrice(price);
+
+            // No new file means the current image stays.
+            if (image != null && !image.isEmpty()) {
+                  product.setImage(image.getBytes());
+            }
 
             return productRepository.save(product);
       }

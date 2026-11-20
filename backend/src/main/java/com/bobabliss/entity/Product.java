@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "products")
@@ -24,12 +25,10 @@ public class Product {
       private Long id;
 
       private String name;
-
-      @Column(length = 1000)
-      private String description;
-
       private String category;
       private Double price;
-      private String imageUrl;
-      private Boolean available;
+      
+      @Column(name = "image", columnDefinition = "LONGBLOB")
+      @ToString.Exclude
+      private byte[] image;
 }

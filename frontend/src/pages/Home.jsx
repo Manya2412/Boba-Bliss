@@ -8,11 +8,7 @@ import HowItWorks from "../components/home/HowItWorks";
 import PopularDrinks from "../components/home/PopularDrinks";
 import Testimonials from "../components/home/Testimonials";
 
-function Home({
-    openLogin,
-    openRegister,
-}) {
-
+function Home({openLogin, openRegister}) {
     return (
         <>
             <Navbar

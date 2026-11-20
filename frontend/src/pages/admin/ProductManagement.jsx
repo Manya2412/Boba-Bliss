@@ -5,14 +5,17 @@ import Footer from "../../components/common/Footer";
 import Modal from "../../components/common/Modal";
 
 const CATEGORIES = ["Milk Tea", "Fruit Tea", "Matcha", "Smoothies"];
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024; // 8 MB
+
+// The backend sends the image as base64 text inside the product JSON.
+const toImageSrc = (base64) => (base64 ? `data:image/png;base64,${base64}` : "");
 
 const EMPTY_FORM = {
     name: "",
-    description: "",
     category: CATEGORIES[0],
     price: "",
-    imageUrl: "",
-    available: true,
+    image: "",
 };
 
 const inputClass =
@@ -20,32 +23,66 @@ const inputClass =
 
 function ProductForm({ initialValues, isEditing, saving, error, onSubmit, onClose }) {
     const [form, setForm] = useState(initialValues);
+    const [imageFile, setImageFile] = useState(null);
+    const [preview, setPreview] = useState(toImageSrc(initialValues.image));
+    const [fileError, setFileError] = useState("");
+
+    // Show a preview of the newly chosen file and free the memory afterwards.
+    useEffect(() => {
+        if (!imageFile) return;
+
+        const objectUrl = URL.createObjectURL(imageFile);
+        setPreview(objectUrl);
+
+        return () => URL.revokeObjectURL(objectUrl);
+    }, [imageFile]);
+
+    const isIncomplete =
+        saving ||
+        !form.name.trim() ||
+        !form.category ||
+        !(Number(form.price) > 0) ||
+        (!form.image && !imageFile);
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            setFileError("Choose a JPG, PNG or WebP image.");
+            e.target.value = "";
+            return;
+        }
+
+        if (file.size > MAX_IMAGE_SIZE) {
+            setFileError("Image must be 8 MB or smaller.");
+            e.target.value = "";
+            return;
+        }
+
+        setFileError("");
+        setImageFile(file);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(form);
+        onSubmit({ ...form, imageFile });
     };
 
     return (
         <form
             onSubmit={handleSubmit}
-            className="max-h-[70vh] overflow-y-auto pr-1 space-y-4"
+            className="max-h-[70vh] overflow-y-auto p-1 space-y-4"
         >
             <div>
                 <label htmlFor="name" className="block mb-1 font-medium">Name</label>
                 <input id="name" name="name" value={form.name} onChange={handleChange}
                     className={inputClass} required />
-            </div>
-
-            <div>
-                <label htmlFor="description" className="block mb-1 font-medium">Description</label>
-                <textarea id="description" name="description" rows={3} maxLength={1000}
-                    value={form.description} onChange={handleChange} className={inputClass} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -67,16 +104,34 @@ function ProductForm({ initialValues, isEditing, saving, error, onSubmit, onClos
             </div>
 
             <div>
-                <label htmlFor="imageUrl" className="block mb-1 font-medium">Image URL</label>
-                <input id="imageUrl" name="imageUrl" value={form.imageUrl}
-                    onChange={handleChange} className={inputClass} />
-            </div>
+                <label htmlFor="image" className="block mb-1 font-medium">Product image</label>
 
-            <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="available" checked={form.available}
-                    onChange={handleChange} className="w-4 h-4" />
-                Available for ordering
-            </label>
+                <div className="flex items-center gap-4">
+                    <div className="w-24 h-24 shrink-0 bg-[#FAF4EE] border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center">
+                        {preview ? (
+                            <img src={preview} alt="Product preview"
+                                className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="upload-icon w-full h-full flex items-center justify-center text-7xl">
+                                🖼️
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                        <input id="image" type="file"
+                            accept="image/png,image/jpeg,image/webp"
+                            onChange={handleFileChange}
+                            className="block w-full text-sm cursor-pointer file:mr-3 file:rounded-lg file:border-0 file:bg-boba-primary file:px-4 file:py-2 file:text-white file:cursor-pointer" />
+                        <p className="mt-1 text-xs text-gray-500">
+                            JPG, PNG or WebP.
+                        </p>
+                        {fileError && (
+                            <p className="mt-1 text-sm text-red-600" role="alert">{fileError}</p>
+                        )}
+                    </div>
+                </div>
+            </div>
 
             {error && <p className="text-red-600 text-sm" role="alert">{error}</p>}
 
@@ -85,8 +140,8 @@ function ProductForm({ initialValues, isEditing, saving, error, onSubmit, onClos
                     className="flex-1 border border-gray-300 py-3 rounded-xl font-medium hover:bg-gray-50 transition cursor-pointer">
                     Cancel
                 </button>
-                <button type="submit" disabled={saving}
-                    className="flex-1 bg-boba-primary text-white py-3 rounded-xl font-medium hover:opacity-90 transition disabled:opacity-60 cursor-pointer">
+                <button type="submit" disabled={isIncomplete}
+                    className="flex-1 bg-boba-primary text-white py-3 rounded-xl font-medium hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer">
                     {saving ? "Saving..." : isEditing ? "Save changes" : "Add product"}
                 </button>
             </div>
@@ -98,7 +153,6 @@ function ProductManagement() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [pageError, setPageError] = useState("");
-
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
     const [saving, setSaving] = useState(false);
@@ -135,16 +189,7 @@ function ProductManagement() {
     const closeForm = () => setShowForm(false);
 
     const handleSave = async (form) => {
-        const payload = {
-            name: form.name.trim(),
-            description: form.description.trim(),
-            category: form.category,
-            price: Number(form.price),
-            imageUrl: form.imageUrl.trim(),
-            available: form.available,
-        };
-
-        if (!payload.name || !(payload.price > 0)) {
+        if (!form.name.trim() || !(Number(form.price) > 0)) {
             setFormError("Enter a name and a price greater than 0.");
             return;
         }
@@ -152,11 +197,22 @@ function ProductManagement() {
         try {
             setSaving(true);
             setFormError("");
+
+            // The image and fields are sent together as one multipart request.
+            // On update, no new file means the current image is kept.
+            const payload = {
+                name: form.name.trim(),
+                category: form.category,
+                price: Number(form.price),
+                imageFile: form.imageFile,
+            };
+
             if (editingProduct) {
                 await productService.updateProduct(editingProduct.id, payload);
             } else {
-                await productService.addProduct(payload);
+                await productService.createProduct(payload);
             }
+
             await loadProducts();
             closeForm();
         } catch {
@@ -180,11 +236,9 @@ function ProductManagement() {
     const formValues = editingProduct
         ? {
             name: editingProduct.name ?? "",
-            description: editingProduct.description ?? "",
             category: editingProduct.category ?? CATEGORIES[0],
             price: editingProduct.price ?? "",
-            imageUrl: editingProduct.imageUrl ?? "",
-            available: editingProduct.available ?? true,
+            image: editingProduct.image ?? "",
         }
         : EMPTY_FORM;
 
@@ -193,9 +247,9 @@ function ProductManagement() {
             <Navbar />
             <div className="p-10 max-w-5xl mx-auto">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-3xl font-bold text-boba-text">Products</h1>
+                    <h1 className="text-4xl font-bold text-boba-text">Products</h1>
                     <button type="button" onClick={openAddForm}
-                        className="bg-boba-primary text-white px-5 py-3 rounded-xl font-medium hover:opacity-90 transition cursor-pointer">
+                        className="bg-boba-dark text-white px-5 py-3 rounded-xl font-medium hover:opacity-90 transition cursor-pointer">
                         Add product
                     </button>
                 </div>
@@ -216,9 +270,11 @@ function ProductManagement() {
                             <div key={product.id}
                                 className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
                                 <div className="w-20 h-20 shrink-0 bg-[#FAF4EE] rounded-xl overflow-hidden flex items-center justify-center">
-                                    {(product.imageUrl || product.image) && (
-                                        <img src={product.imageUrl || product.image} alt={product.name}
-                                            className="w-full h-full object-contain" />
+                                    {product.image && (
+                                        <img
+                                            src={toImageSrc(product.image)}
+                                            alt={product.name}
+                                            className="w-full h-full object-cover" />
                                     )}
                                 </div>
 
@@ -228,14 +284,13 @@ function ProductManagement() {
                                     </h3>
                                     <p className="text-sm text-gray-500">
                                         {product.category}
-                                        {product.available === false && " (unavailable)"}
                                     </p>
                                     <p className="font-bold text-boba-text">₹{product.price}</p>
                                 </div>
 
                                 <div className="flex gap-2">
                                     <button type="button" onClick={() => openEditForm(product)}
-                                        className="border border-boba-primary text-boba-primary px-4 py-2 rounded-xl font-medium hover:bg-boba-primary hover:text-white transition cursor-pointer"
+                                        className="border border-red-500 text-red-600 px-4 py-2 rounded-xl font-medium hover:bg-boba-primary hover:text-white transition cursor-pointer"
                                         aria-label={`Update ${product.name}`}>
                                         Update
                                     </button>

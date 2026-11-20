@@ -24,21 +24,24 @@ function App() {
 
     return (<>
         <Routes>
-            <Route
-                path="/"
-                element={
-                    <Home
-                        openLogin={() =>
-                            setShowLoginModal(true)
-                        }
-                        openRegister={() =>
-                            setShowRegisterModal(true)
-                        }
-                    />
-                }
+            <Route path="/" element={
+                <Home
+                    openLogin={() => setShowLoginModal(true)}
+                    openRegister={() => setShowRegisterModal(true)}
+                />}
             />
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/menu" element={
+                <Menu
+                    openLogin={() => setShowLoginModal(true)}
+                    openRegister={() => setShowRegisterModal(true)}
+                />}
+            />
+            <Route path="/cart" element={
+                <Cart
+                    openLogin={() => setShowLoginModal(true)}
+                    openRegister={() => setShowRegisterModal(true)}
+                />}
+            />
             <Route path="/profile" element={<Profile />} />
             <Route path="/orders" element={<Orders />} />
             <Route

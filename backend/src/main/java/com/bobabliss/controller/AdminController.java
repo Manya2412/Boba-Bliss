@@ -1,11 +1,13 @@
 package com.bobabliss.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.bobabliss.dto.product.ProductRequest;
 import com.bobabliss.entity.Order;
 import com.bobabliss.entity.Product;
 import com.bobabliss.repository.OrderRepository;
@@ -29,14 +31,23 @@ public class AdminController {
             return orderRepository.findAll();
       }
 
-      @PostMapping("/products")
-      public Product addProduct(@RequestBody ProductRequest request) {
-            return productService.addProduct(request);
+      @PostMapping(value = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+      public Product addProduct(
+                  @RequestParam String name,
+                  @RequestParam String category,
+                  @RequestParam Double price,
+                  @RequestParam("image") MultipartFile image) throws IOException {
+            return productService.addProduct(name, category, price, image);
       }
 
-      @PutMapping("/products/{id}")
-      public Product updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
-            return productService.updateProduct(id, request);
+      @PutMapping(value = "/products/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+      public Product updateProduct(
+                  @PathVariable Long id,
+                  @RequestParam String name,
+                  @RequestParam String category,
+                  @RequestParam Double price,
+                  @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+            return productService.updateProduct(id, name, category, price, image);
       }
 
       @PutMapping("/orders/{id}/status")

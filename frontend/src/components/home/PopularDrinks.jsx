@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
-
 import { FaArrowRight } from "react-icons/fa";
 
 import ProductCard from "../common/ProductCard";
@@ -39,10 +37,10 @@ function PopularDrinks() {
 
                 <Swiper
                     modules={[Pagination, Autoplay]}
-                    spaceBetween={24}
+                    spaceBetween={20}
                     slidesPerView={1}
-                    centeredSlides
-                    loop
+                    centeredSlides={false}
+                    loop={drinks.length > 4}
                     autoplay={{
                         delay: 2500,
                         disableOnInteraction: false,
@@ -52,11 +50,15 @@ function PopularDrinks() {
                     breakpoints={{
                         640: {
                             slidesPerView: 2,
-                            spaceBetween: 24,
+                            spaceBetween: 20,
+                        },
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 20,
                         },
                         1024: {
-                            slidesPerView: 3,
-                            spaceBetween: 30,
+                            slidesPerView: 4,
+                            spaceBetween: 20,
                         },
                     }}
                     className="popular-drinks-swiper !px-2 !pt-5 !pb-14"

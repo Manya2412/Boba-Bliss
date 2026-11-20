@@ -76,7 +76,6 @@ public class OrderService {
                   OrderItem orderItem = OrderItem.builder()
                               .productid(product.getId())
                               .productName(product.getName())
-                              .productImageUrl(product.getImageUrl())
                               .unitprice(product.getPrice())
                               .quantity(cartItem.getQuantity())
                               .lineTital(lineTotal)
@@ -105,21 +104,20 @@ public class OrderService {
 
             User user = getCurrentUser();
 
-            Order order = orderRepository.findById(orderId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found wit id: " + orderId));
+            Order order = findOrder(orderId);
 
             verifyOrderOwner(order, user);
 
             return order;
       }
 
-      @Transactional(readOnly = true)
+      // Writes data, so it must not be readOnly (a read-only transaction can skip the save).
+      @Transactional
       public Order cancelOrder(Long orderId) {
 
             User user = getCurrentUser();
 
-            Order order = orderRepository.findById(orderId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Order not found wit id: " + orderId));
+            Order order = findOrder(orderId);
 
             verifyOrderOwner(order, user);
 
@@ -127,9 +125,37 @@ public class OrderService {
                   throw new RuntimeException("Delivered order cannot be cancelled");
             }
 
+            if (order.getOrderStatus() == OrderStatus.CANCELLED) {
+                  throw new RuntimeException("Order is already cancelled");
+            }
+
             order.setOrderStatus(OrderStatus.CANCELLED);
 
             return orderRepository.save(order);
+      }
+
+      @Transactional
+      public Order updateStatus(Long id, String status) {
+
+            Order order = findOrder(id);
+
+            if (status == null || status.isBlank()) {
+                  throw new RuntimeException("Order status is required");
+            }
+
+            try {
+                  order.setOrderStatus(OrderStatus.valueOf(status.trim().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                  throw new RuntimeException("Invalid order status: " + status);
+            }
+
+            return orderRepository.save(order);
+      }
+
+      private Order findOrder(Long orderId) {
+
+            return orderRepository.findById(orderId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
       }
 
       private User getCurrentUser() {
@@ -142,15 +168,6 @@ public class OrderService {
             return userRepository.findByEmail(authentication.getName())
                         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-      }
-
-      public Order updateStatus(Long id, String status) {
-
-            Order order = getOrder(id);
-
-            order.setOrderStatus(OrderStatus.valueOf(status));
-
-            return orderRepository.save(order);
       }
 
       private void verifyOrderOwner(Order order, User user) {

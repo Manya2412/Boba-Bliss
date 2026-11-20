@@ -8,8 +8,6 @@ import com.bobabliss.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-      List<Product> findByAvailableTrue();
-
       List<Product> findByCategory(String category);
 
 }

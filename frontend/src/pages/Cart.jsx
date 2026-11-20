@@ -18,7 +18,7 @@ import { useAuth } from "../context/AuthContext";
 import CheckoutModal from "../components/checkout/CheckoutModal";
 import OrderSuccessModal from "../components/checkout/OrderSuccessModal";
 
-function Cart() {
+function Cart({openLogin, openRegister}) {
     const {
         cartItems,
         subtotal,
@@ -112,7 +112,9 @@ function Cart() {
 
     return (
         <>
-            <Navbar />
+            <Navbar
+                openLogin={openLogin}
+                openRegister={openRegister} />
 
             <main className="min-h-screen bg-white">
                 <section className="max-w-7xl mx-auto px-6 py-10">
