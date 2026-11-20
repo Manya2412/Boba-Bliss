@@ -48,7 +48,7 @@ function FeaturesSection() {
                             key={index}
                             className="bg-white border border-boba-border rounded-3xl p-8 shadow-sm hover:shadow-xl transition"
                         >
-                            <div className="w-full rounded-2x1 flex items-center justify-center text-boba-primary text-xl">
+                            <div className="w-full rounded-2xl flex items-center justify-center text-boba-primary text-xl">
                                 <img
                                     src={feature.icon}
                                     alt={feature.title}

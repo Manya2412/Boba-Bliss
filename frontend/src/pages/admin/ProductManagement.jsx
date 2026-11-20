@@ -6,9 +6,8 @@ import Modal from "../../components/common/Modal";
 
 const CATEGORIES = ["Milk Tea", "Fruit Tea", "Matcha", "Smoothies"];
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_IMAGE_SIZE = 8 * 1024 * 1024; // 8 MB
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024; 
 
-// The backend sends the image as base64 text inside the product JSON.
 const toImageSrc = (base64) => (base64 ? `data:image/png;base64,${base64}` : "");
 
 const EMPTY_FORM = {
@@ -27,7 +26,6 @@ function ProductForm({ initialValues, isEditing, saving, error, onSubmit, onClos
     const [preview, setPreview] = useState(toImageSrc(initialValues.image));
     const [fileError, setFileError] = useState("");
 
-    // Show a preview of the newly chosen file and free the memory afterwards.
     useEffect(() => {
         if (!imageFile) return;
 
@@ -198,8 +196,6 @@ function ProductManagement() {
             setSaving(true);
             setFormError("");
 
-            // The image and fields are sent together as one multipart request.
-            // On update, no new file means the current image is kept.
             const payload = {
                 name: form.name.trim(),
                 category: form.category,

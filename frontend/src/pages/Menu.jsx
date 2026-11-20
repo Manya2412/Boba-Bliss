@@ -1,16 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import ProductCard from "../components/common/ProductCard";
-import drinks from "../data/drinks";
 import productService from "../services/productService";
 import menuBobaImage from "../assets/images/menuBoba.png"
 
 function Menu({ openLogin, openRegister }) {
     const [searchText, setSearchText] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
-    const [adminProducts, setAdminProducts] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState(false);
 
     const categories = [
@@ -21,52 +21,45 @@ function Menu({ openLogin, openRegister }) {
         "Smoothies",
     ];
 
-    // Drinks added by the admin come from the backend.
+    // Every drink on the menu comes from the backend.
     useEffect(() => {
         let ignore = false;
 
-        const loadAdminProducts = async () => {
+        const loadProducts = async () => {
             try {
                 const data = await productService.getProducts();
+
                 if (!ignore) {
-                    setAdminProducts(data);
+                    // The backend sends each image as base64 text; turn it into an <img> source.
+                    setProducts(
+                        data.map((product) => ({
+                            ...product,
+                            image: product.image
+                                ? `data:image/png;base64,${product.image}`
+                                : "",
+                        }))
+                    );
                     setLoadError(false);
                 }
             } catch {
                 if (!ignore) {
                     setLoadError(true);
                 }
+            } finally {
+                if (!ignore) {
+                    setIsLoading(false);
+                }
             }
         };
 
-        loadAdminProducts();
+        loadProducts();
 
         return () => {
             ignore = true;
         };
     }, []);
 
-    // The 8 built-in drinks plus the admin's drinks, in one list.
-    const allDrinks = useMemo(() => {
-        // Prefix the built-in ids so they can never clash with database ids
-        // (the cart and React keys rely on ids being unique).
-        const builtInDrinks = drinks.map((drink) => ({
-            ...drink,
-            id: `static-${drink.id}`,
-        }));
-
-        const addedDrinks = adminProducts.map((product) => ({
-            ...product,
-            // The backend sends the image as base64 text; turn it into an <img> source.
-            image: product.image
-                ? `data:image/png;base64,${product.image}`
-                : "",
-        }));
-
-        return [...builtInDrinks, ...addedDrinks];
-    }, [adminProducts]);
-
-    const filteredDrinks = allDrinks.filter((drink) => {
+    const filteredDrinks = products.filter((drink) => {
         const matchesSearch = drink.name
             .toLowerCase()
             .includes(searchText.toLowerCase().trim());
@@ -153,13 +146,15 @@ function Menu({ openLogin, openRegister }) {
             <section className="bg-white pb-20">
                 <div className="max-w-7xl mx-auto px-6">
 
-                    {loadError && (
-                        <p className="mb-6 text-sm text-gray-500" role="status">
-                            Some of our newest drinks could not be loaded right now.
+                    {isLoading ? (
+                        <p className="py-20 text-center text-gray-500">
+                            Loading drinks...
                         </p>
-                    )}
-
-                    {filteredDrinks.length > 0 ? (
+                    ) : loadError ? (
+                        <p className="py-20 text-center text-red-600" role="alert">
+                            We couldn't load the menu right now. Please try again in a moment.
+                        </p>
+                    ) : filteredDrinks.length > 0 ? (
                         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                             {filteredDrinks.map((drink) => (
                                 <ProductCard

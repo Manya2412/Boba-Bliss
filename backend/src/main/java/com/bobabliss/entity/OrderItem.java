@@ -41,8 +41,6 @@ public class OrderItem {
       @Column(nullable = false)
       private String productName;
 
-      private String productImageUrl;
-
       @Column(nullable = false)
       private Double unitprice;
 

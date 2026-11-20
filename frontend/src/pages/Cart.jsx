@@ -18,7 +18,7 @@ import { useAuth } from "../context/AuthContext";
 import CheckoutModal from "../components/checkout/CheckoutModal";
 import OrderSuccessModal from "../components/checkout/OrderSuccessModal";
 
-function Cart({openLogin, openRegister}) {
+function Cart({ openLogin, openRegister }) {
     const {
         cartItems,
         subtotal,
@@ -30,6 +30,7 @@ function Cart({openLogin, openRegister}) {
         decreaseQuantity,
         removeFromCart,
         applyCoupon,
+        clearCart,
         cartError,
     } = useCart();
 
@@ -91,13 +92,15 @@ function Cart({openLogin, openRegister}) {
         setShowRegisterModal(true);
     };
 
-    const handleOrderSuccess = (
-        createdOrder
-    ) => {
+    const handleOrderSuccess = (createdOrder) => {
+        clearCart();
+        setCouponCode("");
+        setCouponMessage("");
         setPlacedOrder(createdOrder);
         setShowCheckoutModal(false);
         setShowOrderSuccessModal(true);
     };
+    
     const [
         showCheckoutModal,
         setShowCheckoutModal,
@@ -189,7 +192,13 @@ function Cart({openLogin, openRegister}) {
                                         className="flex flex-col sm:flex-row sm:items-center gap-5 border-b border-gray-200 last:border-b-0 py-6"
                                     >
                                         <div className="w-full sm:w-28 h-28 bg-boba-cream rounded-2xl overflow-hidden flex-shrink-0">
-                                            {item.image}
+                                            {item.image && (
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            )}
                                         </div>
 
                                         <div className="flex-1">

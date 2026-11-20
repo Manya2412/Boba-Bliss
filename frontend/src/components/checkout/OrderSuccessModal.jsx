@@ -22,17 +22,17 @@ function OrderSuccessModal({
             isOpen={isOpen}
             onClose={onClose}
             title=""
-            maxwidth="max-w-md"
+            maxWidth="max-w-md"
         >
-            <div className="text-center">
+            <div className="text-center -mt-12">
 
-                <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-3xl text-white">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-2xl text-white">
                         <FaCheck />
                     </div>
                 </div>
 
-                <h2 className="mt-7 font-heading text-4xl text-boba-text">
+                <h2 className="mt-4 font-heading text-4xl text-boba-text">
                     Order Placed Successfully!
                 </h2>
 
@@ -41,12 +41,12 @@ function OrderSuccessModal({
                     Your delicious drinks are being prepared.
                 </p>
 
-                <div className="mt-7 rounded-2x1 bg-boba-cream p-5">
+                <div className="mt-7 rounded-2xl bg-boba-cream p-5">
                     <p className="text-sm uppercase tracking-[2px] text-gray-500">
                         Order number
                     </p>
 
-                    <p className="mt-2 text-2x1 font-bold text-boba-primary">
+                    <p className="mt-2 text-2xl font-bold text-boba-primary">
                         #{orderId}
                     </p>
 
@@ -58,18 +58,6 @@ function OrderSuccessModal({
 
                             <span className="font-bold">
                                 ₹{order.totalAmount}
-                            </span>
-                        </div>
-                    )}
-
-                    {order?.orderStatus && (
-                        <div className="mt-3 flex justify-between">
-                            <span className="text-gray-600">
-                                Status
-                            </span>
-
-                            <span className="font-semibold text-green-600">
-                                {formatStatus(order.orderStatus)}
                             </span>
                         </div>
                     )}
@@ -88,7 +76,7 @@ function OrderSuccessModal({
                     <Link
                         to="/menu"
                         onClick={onClose}
-                        className="block w-full rounded-x1 border border-boba-primary py-4 font-semibold text-boba-primary transition hover:bg-pink-50"
+                        className="block w-full rounded-xl border border-boba-primary py-4 font-semibold text-boba-primary transition hover:bg-pink-50"
                     >
                         Continue Shopping
                     </Link>
@@ -96,18 +84,6 @@ function OrderSuccessModal({
             </div>
         </Modal>
     );
-}
-
-
-function formatStatus(status) {
-    return status
-        .toLowerCase()
-        .split("_")
-        .map(
-            (word) =>
-                word.charAt(0).toUpperCase() + word.slice(1)
-        )
-        .join(" ");
 }
 
 export default OrderSuccessModal;

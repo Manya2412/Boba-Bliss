@@ -84,12 +84,15 @@ function CheckoutModal({
         setErrorMessage("");
 
         const checkoutData = {
+            items: cartItems.map((item) => ({
+                productId: item.id,
+                quantity: item.quantity,
+            })),
             phone: formData.phone.trim(),
             deliveryAddress: formData.deliveryAddress.trim(),
             paymentMethod: formData.paymentMethod,
             couponCode: discountPercentage > 0 ? "BOBA20" : null,
         };
-
         try {
             const createdOrder = await orderService.placeOrder(checkoutData);
 
@@ -106,6 +109,7 @@ function CheckoutModal({
                 onOrderSuccess(createdOrder);
             }
         } catch (error) {
+            console.error("Place order failed:", error);
             setErrorMessage(
                 getApiError(
                     error,
@@ -122,7 +126,7 @@ function CheckoutModal({
             isOpen={isOpen}
             onClose={onClose}
             title="Complete Checkout"
-            maxwidth="max-w-2x1"
+            maxWidth="max-w-2xl"
         >
 
             <form
@@ -155,7 +159,7 @@ function CheckoutModal({
                             placeholder="Enter 10-digit phone number"
                             maxLength={10}
                             autoComplete="tel"
-                            className="w-full rounded-x1 border border-gray-300 py-3 pl-11 pr-4 outline-none focus:border-boba-primary focus:ring-2 focus-ring-pink-100"
+                            className="w-full rounded-xl border border-gray-300 py-3 pl-11 pr-4 outline-none focus:border-boba-primary focus:ring-2 focus:ring-pink-100"
                         />
                     </div>
                 </div>
@@ -179,7 +183,7 @@ function CheckoutModal({
                             placeholder="Enter complete delivery address"
                             rows={2}
                             autoComplete="street-address"
-                            className="w-full resize-none rounded-x1 border border-gray-300 py-3 pl-11 pr-4 outline-none focus:border-boba-primary focus:ring-2 focus-ring-pink-100"
+                            className="w-full resize-none rounded-xl border border-gray-300 py-3 pl-11 pr-4 outline-none focus:border-boba-primary focus:ring-2 focus:ring-pink-100"
                         />
                     </div>
                 </div>
@@ -220,7 +224,7 @@ function CheckoutModal({
                         type="button"
                         onClick={onClose}
                         disabled={isSubmitting}
-                        className="flex-1 rounded-x1 border border-gray-300 py-4 font-semibold hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                        className="flex-1 rounded-xl border border-gray-300 py-4 font-semibold hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
                     >
                         Back to Cart
                     </button>
@@ -228,7 +232,7 @@ function CheckoutModal({
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 rounded-x1 bg-boba-primary py-4 font-semibold text-white transition hover:bg-boba-dark disabled:cursor-not-allowed disabled:bg-gray-300 cursor-pointer"
+                        className="flex-1 rounded-xl bg-boba-primary py-4 font-semibold text-white transition hover:bg-boba-dark disabled:cursor-not-allowed disabled:bg-gray-300 cursor-pointer"
                     >
                         {isSubmitting
                             ? "Placing Order..."
