@@ -1,6 +1,19 @@
+
+import { useState } from "react";
 import ContactImage from "../../assets/images/contact.png";
 
 function ContactSection() {
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [email, setEmail] = useState("");
+
+    const handleSubscribe = (e) => {
+        e.preventDefault();
+
+        if (!email.trim()) return;
+
+        setIsSubscribed(true);
+    };
+
     return (
         <section id="contact" className="bg-white py-15">
             <div className="max-w-7xl mx-auto px-6">
@@ -33,15 +46,39 @@ function ContactSection() {
                             Be the first to know about new drinks and special offers.
                         </p>
 
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            className="w-full p-4 rounded-xl border border-boba-gray mb-4 outline-none"
-                        />
+                        {isSubscribed ? (
+                            <div className="text-center py-6">
+                                <div className="text-4xl mb-4">🎉</div>
 
-                        <button className="w-full bg-boba-primary text-white py-4 rounded-xl font-semibold hover:bg-boba-dark transition cursor-pointer">
-                            Subscribe
-                        </button>
+                                <h4 className="text-2xl font-heading text-boba-primary mb-3">
+                                    Thank you for subscribing! 
+                                </h4>
+
+                                <p className="text-gray-600">
+                                    Stay tuned for
+                                    delicious updates, new drinks, and exclusive
+                                    offers from Boba Bliss.
+                                </p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubscribe}>
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    className="w-full p-4 rounded-xl border border-boba-gray mb-4 outline-none"
+                                />
+
+                                <button
+                                    type="submit"
+                                    className="w-full bg-boba-primary text-white py-4 rounded-xl font-semibold hover:bg-boba-dark transition cursor-pointer"
+                                >
+                                    Subscribe
+                                </button>
+                            </form>
+                        )}
                     </div>
 
                 </div>

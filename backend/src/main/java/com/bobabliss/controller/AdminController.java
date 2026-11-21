@@ -28,7 +28,7 @@ public class AdminController {
 
       @GetMapping("/orders")
       public List<Order> getAllOrder() {
-            return orderRepository.findAll();
+            return orderRepository.findAllByOrderByOrderDateDesc();
       }
 
       @PostMapping(value = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
