@@ -10,6 +10,11 @@ const getAllOrders = async () => {
   return response.data;
 };
 
+const getMyOrder = async () => {
+  const response = await api.get("/orders");
+  return response.data;
+}
+
 const updateOrderStatus = async (orderId, status) => {
   const response = await api.put(
     `/admin/orders/${orderId}/status`,
@@ -21,5 +26,6 @@ const updateOrderStatus = async (orderId, status) => {
 export default {
   placeOrder,
   getAllOrders,
+  getMyOrder,
   updateOrderStatus,
 };
